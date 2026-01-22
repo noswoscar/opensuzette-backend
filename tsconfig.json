@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"jsx": "react",
+		"target": "ES6",
+		"module": "NodeNext",
+		"rootDir": "./src",
+		"esModuleInterop": true,
+		"lib": ["DOM", "ES2017"] // includes standard JS features + DOM APIs
+	},
+	"include": ["src"],
+	"exclude": ["node_modules"]
+}
