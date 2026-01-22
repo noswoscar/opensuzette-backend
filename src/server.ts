@@ -19,6 +19,8 @@ client.connect().then(() => {
 	console.log('Connected to MongoDB')
 })
 
+console.log('Connecté proprement')
+
 // Enregistrer un vote
 app.post('/api/votes', async (req, res) => {
 	const { categorieId, besoinId } = req.body
