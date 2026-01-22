@@ -4,6 +4,7 @@
 		"target": "ES6",
 		"module": "NodeNext",
 		"rootDir": "./src",
+		"outDir": "./dist",
 		"esModuleInterop": true,
 		"lib": ["DOM", "ES2017"] // includes standard JS features + DOM APIs
 	},
