@@ -1,14 +1,15 @@
 import cors from 'cors'
 import express from 'express'
 import { MongoClient } from 'mongodb'
+import path from 'path'
 
 const app = express()
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 app.use(cors())
 app.use(express.json())
 
-// Connexion MongoDB
+// --- MongoDB connection ---
 const MONGO_URL = 'mongodb://localhost:27017'
 const client = new MongoClient(MONGO_URL)
 let votesCollection: any
@@ -20,6 +21,8 @@ client.connect().then(() => {
 })
 
 console.log('Connecté proprement')
+
+// --- API routes ---
 
 // Enregistrer un vote
 app.post('/api/votes', async (req, res) => {
@@ -42,7 +45,7 @@ app.post('/api/votes', async (req, res) => {
 })
 
 // Récupérer les votes par besoin
-app.get('/api/votes', async (req, res) => {
+app.get('/api/votes', async (_req, res) => {
 	try {
 		const aggregation = await votesCollection
 			.aggregate([{ $group: { _id: { categorieId: '$categorieId', besoinId: '$besoinId' }, votes: { $sum: 1 } } }])
@@ -53,4 +56,14 @@ app.get('/api/votes', async (req, res) => {
 	}
 })
 
+// --- Serve frontend ---
+const publicPath = path.join(__dirname, '../public')
+app.use(express.static(publicPath))
+
+// SPA fallback: for any other route, serve index.html
+app.get('*', (_req, res) => {
+	res.sendFile(path.join(publicPath, 'index.html'))
+})
+
+// --- Start server ---
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
