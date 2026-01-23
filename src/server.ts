@@ -38,6 +38,10 @@ app.post('/api/votes', async (req, res) => {
 		})
 		res.json({ success: true, voteId: result.insertedId })
 	} catch (err: any) {
+		if (err.code === 11000)
+			res.status(409).json({
+				message: 'Allready voted on this category'
+			})
 		res.status(500).json({ error: err.message })
 	}
 })
